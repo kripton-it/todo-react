@@ -1,11 +1,13 @@
-import React from 'react';
+import React from "react";
 
-const Search = () => {
-  const text = "Type here to search";
-  const style = {
-    fontSize: 25
-  };
-  return <input placeholder={text} style={style} disabled />;
-};
+import "./search.css";
+
+const Search = () => (
+  <input
+    type="text"
+    placeholder="type to search"
+    className="form-control search-input"
+  />
+);
 
 export default Search;

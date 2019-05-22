@@ -1,33 +1,39 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 
-import Header from './components/header';
-import Search from './components/search';
-import TodoList from './components/todo-list';
+import Header from "./components/header";
+import Search from "./components/search";
+import TodoList from "./components/todo-list";
+import ItemStatusFilter from "./components/item-status-filter";
+
+import './index.css';
 
 const App = () => {
   const todos = [
     {
-      label: 'Drink Coffee',
+      label: "Drink Coffee",
       important: false,
-      id: 1,
+      id: 1
     },
     {
-      label: 'Learn React',
+      label: "Learn React",
       important: true,
-      id: 2,
+      id: 2
     },
     {
-      label: 'Find a Job',
+      label: "Find a Job",
       important: false,
-      id: 3,
+      id: 3
     }
   ];
   return (
-    <div>
-      <Header />
-      <Search />
-      <TodoList todos={todos}/>
+    <div className="todo-app">
+      <Header remain={1} done={3} />
+      <div className="top-panel d-flex">
+        <Search />
+        <ItemStatusFilter />
+      </div>
+      <TodoList todos={todos} />
     </div>
   );
 };
