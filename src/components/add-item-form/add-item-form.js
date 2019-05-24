@@ -5,7 +5,7 @@ import "./add-item-form.css";
 class AddItemForm extends Component {
   onClick = () => {
     const { onAdd } = this.props;
-    onAdd(`hello`);
+    onAdd();
   };
 
   render() {
