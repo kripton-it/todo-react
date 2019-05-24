@@ -4,6 +4,7 @@ import Header from "../header";
 import Search from "../search";
 import TodoList from "../todo-list";
 import ItemStatusFilter from "../item-status-filter";
+import AddItemForm from "../add-item-form";
 
 import "./app.css";
 
@@ -31,7 +32,23 @@ class App extends Component {
   onDelete = id => {
     this.setState(({ todos }) => {
       return {
-        todos: todos.filter(item => item.id !== id),
+        todos: todos.filter(item => item.id !== id)
+      };
+    });
+  };
+
+  onAdd = (text = "new item") => {
+    this.setState(({ todos }) => {
+      const maxId = Math.max(...todos.map(({ id }) => id));
+
+      const newItem = {
+        label: `${text}, id: ${maxId + 1}`,
+        important: false,
+        id: maxId + 1
+      };
+
+      return {
+        todos: [...todos, newItem]
       };
     });
   };
@@ -46,6 +63,7 @@ class App extends Component {
           <ItemStatusFilter />
         </div>
         <TodoList todos={todos} onDelete={this.onDelete} />
+        <AddItemForm onAdd={this.onAdd} />
       </div>
     );
   }
