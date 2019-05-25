@@ -3,9 +3,9 @@ import React, { Component } from "react";
 import Header from "../header";
 import Search from "../search";
 import TodoList from "../todo-list";
-import ItemStatusFilter from "../item-status-filter";
+import FilterGroup from "../filter-group";
 import AddItemForm from "../add-item-form";
-import { toggleProperty } from "../../utils";
+import { toggleProperty, changeActiveFilter } from "../../utils";
 
 import "./app.css";
 
@@ -14,9 +14,23 @@ class App extends Component {
     todos: [
       this.createItem("Drink Coffee", 1),
       this.createItem("Learn React", 2),
-      this.createItem("Find a Job", 3)
-    ]
+      this.createItem("Find a Job", 3),
+    ],
+    search: ``,
+    filters: [
+      this.createFilter("All", 1, true),
+      this.createFilter("Active", 2),
+      this.createFilter("Done", 3),
+    ],
   };
+
+  createFilter(label, id, isActive = false) {
+    return {
+      label,
+      id,
+      isActive,
+    }
+  }
 
   createItem(label, id) {
     return {
@@ -53,19 +67,57 @@ class App extends Component {
     });
   };
 
+  onSearch = (value) => {
+    console.log(value);
+    this.setState({
+      search: value.toLowerCase(),
+    });
+  }
+
+  onFilter = (id) => {
+    const { filters } = this.state;
+    const activeFilterID = filters.find(filter => filter.isActive).id;
+    console.log(activeFilterID);
+    if (activeFilterID !== id) {
+      const newFilters = changeActiveFilter(filters, id);
+      this.setState({
+        filters: newFilters,
+      });
+    }
+  }
+
+  searchFilter = ({ label }) => {
+    const { search } = this.state;
+    return label.toLowerCase().includes(search);
+  }
+
+  statusFilter = ({ done }) => {
+    const { filters } = this.state;
+    const status = filters.find(filter => filter.isActive).label;
+    switch (status) {
+      case `Done`:
+        return done;
+      case `Active`:
+        return !done;
+      default:
+        return true;
+    }
+  }
+
   render() {
-    const { todos } = this.state;
-    const done = todos.map(({ done }) => done).filter(isDone => isDone).length;
-    const remain = todos.length - done;
+    const { todos, search, filters } = this.state;
+    const filteredTodos = todos.filter(this.searchFilter).filter(this.statusFilter);
+    const done = filteredTodos.map(({ done }) => done).filter(isDone => isDone).length;
+    const remain = filteredTodos.length - done;
     return (
       <div className="todo-app">
         <Header remain={remain} done={done} />
         <div className="top-panel d-flex">
-          <Search />
-          <ItemStatusFilter />
+          <Search onSearch={this.onSearch} value={search} />
+          <FilterGroup filters={filters} onFilter={this.onFilter}/>
         </div>
         <TodoList
-          todos={todos}
+          todos={filteredTodos}
           onDelete={this.onDelete}
           onToggle={this.onToggle}
         />
