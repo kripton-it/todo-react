@@ -1,7 +1,4 @@
-.add-item-form {
-
+.add-item-form input {
+  margin-right: 10px;
 }
 
-.add-item-btn {
-  font-size: 30px;
-}

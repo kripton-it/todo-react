@@ -3,22 +3,44 @@ import React, { Component } from "react";
 import "./add-item-form.css";
 
 class AddItemForm extends Component {
-  onClick = () => {
-    const { onAdd } = this.props;
-    onAdd();
+  state = {
+    input: ``,
+  }
+
+  onChange = ({ target }) => {
+    this.setState({
+      input: target.value.toUpperCase(),
+    });
   };
 
+  onSubmit = (evt) => {
+    evt.preventDefault();
+    const { input } = this.state;
+    if (input) {
+      const { onAdd } = this.props;
+      onAdd(input);
+      this.setState({
+        input: ``,
+      });
+    }
+  }
+
   render() {
+    const { input } = this.state;
     return (
-      <div className="add-item-form">
+      <form className="add-item-form d-flex" onSubmit={this.onSubmit}>
+        <input
+          className="form-control"
+          type="text"
+          onChange={this.onChange}
+          placeholder="What needs to be done?"
+          value={input}
+        />
         <button
-          type="button"
-          className="btn btn-primary btn-block add-item-btn"
-          onClick={this.onClick}
-        >
-          Add Item
-        </button>
-      </div>
+          type="submit"
+          className="btn btn-primary"
+        >Add</button>
+      </form>
     );
   }
 }

@@ -41,13 +41,11 @@ class App extends Component {
     });
   };
 
-  onAdd = (text = "new item") => {
+  onAdd = (text) => {
     this.setState(({ todos }) => {
       const maxId = Math.max(...todos.map(({ id }) => id));
 
-      const label = `${text}, id: ${maxId + 1}`;
-
-      const newItem = this.createItem(label, maxId + 1);
+      const newItem = this.createItem(text, maxId + 1);
 
       return {
         todos: [...todos, newItem]
