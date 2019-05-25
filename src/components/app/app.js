@@ -68,7 +68,6 @@ class App extends Component {
   };
 
   onSearch = (value) => {
-    console.log(value);
     this.setState({
       search: value.toLowerCase(),
     });
@@ -88,7 +87,7 @@ class App extends Component {
 
   searchFilter = ({ label }) => {
     const { search } = this.state;
-    return label.toLowerCase().includes(search);
+    return search ? label.toLowerCase().includes(search) : true;
   }
 
   statusFilter = ({ done }) => {
